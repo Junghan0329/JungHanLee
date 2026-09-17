@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[이벤트 기획서] 2D 타워 디펜스 특별전</title>
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    <style>
+        :root {
+            /* IDE / Game Engine Inspired Dark Theme */
+            --bg-base: #131417;
+            --bg-container: #1e2126;
+            --bg-card: #272a30;
+            --bg-highlight: rgba(6, 182, 212, 0.1);
+            
+            /* Text Colors */
+            --text-main: #e2e4e9;
+            --text-muted: #8b949e;
+            --text-light: #ffffff;
+            
+            /* Neon Accents */
+            --accent-cyan: #00f0ff;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-purple: #8b5cf6;
+            --border-color: #353942;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+            /* Subtle grid background pattern */
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        .gdd-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--bg-container);
+            padding: 50px 60px;
+            border-radius: 16px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 
+                        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 50px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .subtitle {
+            color: var(--accent-cyan);
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+        }
+
+        h1 {
+            color: var(--text-light);
+            font-size: 32px;
+            font-weight: 800;
+            line-height: 1.3;
+        }
+
+        h2 {
+            color: var(--text-light);
+            font-size: 20px;
+            font-weight: 700;
+            margin: 40px 0 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 20px;
+            background-color: var(--accent-cyan);
+            border-radius: 2px;
+            box-shadow: 0 0 8px var(--accent-cyan);
+        }
+
+        .highlight-box {
+            background-color: var(--bg-card);
+            border-left: 4px solid var(--accent-blue);
+            padding: 24px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .highlight-box ul {
+            list-style: none;
+        }
+
+        .highlight-box li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .highlight-box li:last-child {
+            margin-bottom: 0;
+        }
+
+        .highlight-box li::before {
+            content: '▶';
+            position: absolute;
+            left: 0;
+            top: 2px;
+            font-size: 10px;
+            color: var(--accent-blue);
+        }
+
+        .highlight-box strong {
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+
+        .core-loop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .step-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 24px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .step-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3), 0 0 15px rgba(0, 240, 255, 0.1);
+        }
+
+        .step-number {
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--bg-base);
+            background-color: var(--accent-cyan);
+            padding: 4px 10px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .step-title {
+            color: var(--text-light);
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .step-desc {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .gdd-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-bottom: 40px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .gdd-table th, .gdd-table td {
+            padding: 16px 20px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .gdd-table th {
+            background-color: rgba(0, 0, 0, 0.2);
+            color: var(--text-light);
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .gdd-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .gdd-table tr {
+            background-color: var(--bg-card);
+            transition: background-color 0.2s ease;
+        }
+
+        .gdd-table tr:hover {
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+
+        .highlight-text {
+            color: var(--accent-green);
+            font-weight: 600;
+        }
+
+        .kpi-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .kpi-item {
+            background-color: var(--bg-card);
+            padding: 16px 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .badge {
+            font-size: 12px;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 9999px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge.cyan { background-color: rgba(0, 240, 255, 0.1); color: var(--accent-cyan); border: 1px solid rgba(0, 240, 255, 0.3); }
+        .badge.purple { background-color: rgba(139, 92, 246, 0.1); color: var(--accent-purple); border: 1px solid rgba(139, 92, 246, 0.3); }
+        .badge.green { background-color: rgba(16, 185, 129, 0.1); color: var(--accent-green); border: 1px solid rgba(16, 185, 129, 0.3); }
+
+        .kpi-text {
+            color: var(--text-main);
+            font-size: 15px;
+        }
+
+        /* 반응형 */
+        @media (max-width: 768px) {
+            .gdd-container {
+                padding: 30px 20px;
+            }
+            .kpi-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="gdd-container">
+        
+        <div class="header-section">
+            <div class="subtitle">트렌드 코리아 2026 '레디코어' & '픽셀라이프' 기반 신규 이벤트 기획</div>
+            <h1>[이벤트 기획서] 2D 타워 디펜스 특별전:<br>'전술 시뮬레이션 룸'</h1>
+        </div>
+
+        <h2>1. 기획 배경 및 트렌드 분석</h2>
+        <div class="highlight-box">
+            <ul>
+                <li><strong>레디코어(Ready-core):</strong> 치밀한 사전 준비의 재미. 전투 밖에서 웨이포인트를 분석하고 타워를 설계하는 전략적 쾌감 극대화.</li>
+                <li><strong>픽셀라이프(Pixelated Life):</strong> 짧게 끊어지는 호흡. 본 전투는 1.5배속 오토 배틀러 형식으로 진행하여 피로도 최소화.</li>
+            </ul>
+        </div>
+
+        <h2>2. 시스템 코어 루프</h2>
+        <div class="core-loop-grid">
+            <div class="step-card">
+                <span class="step-number">Step 01</span>
+                <div class="step-title">맵/적 분석</div>
+                <div class="step-desc">전투 시작 전, 웨이포인트(경로) 및 적 스폰 로직을 UI를 통해 100% 파악합니다.</div>
+            </div>
+            <div class="step-card">
+                <span class="step-number">Step 02</span>
+                <div class="step-title">전략 셋업</div>
+                <div class="step-desc">제한된 코스트 내에서 최적의 위치에 타워를 사전 배치하며 방어 진형을 설계합니다.</div>
+            </div>
+            <div class="step-card">
+                <span class="step-number">Step 03</span>
+                <div class="step-title">오토 배틀</div>
+                <div class="step-desc">실행 페이즈 돌입 시 유저 개입 없이 결과를 관전하며, 1.5배속으로 짧게 호흡을 마칩니다.</div>
+            </div>
+        </div>
+
+        <h2>3. 상세 룰 및 밸런싱</h2>
+        <table class="gdd-table">
+            <thead>
+                <tr>
+                    <th>구분 (Category)</th>
+                    <th>세부 규칙 (Detailed Rules)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>자원 (Resources)</strong></td>
+                    <td>일반 스테이지 대비 <span class="highlight-text">30% 적은 한정된 코스트</span> 부여하여 설계의 난이도와 성취감 상승.</td>
+                </tr>
+                <tr>
+                    <td><strong>맵 기믹 (Map Gimmick)</strong></td>
+                    <td>적의 이동 경로와 스폰 테이블이 <span class="highlight-text">매일 변경되는 일일 던전 형식</span>을 채택하여 매일 새로운 전략 요구.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>4. 성과 측정 지표 (KPI)</h2>
+        <div class="kpi-container">
+            <div class="kpi-item">
+                <span class="badge cyan">DAU / MAU</span>
+                <span class="kpi-text">이벤트 탭 진입률 및 일일 특별전 참여율 트래킹</span>
+            </div>
+            <div class="kpi-item">
+                <span class="badge purple">Retention</span>
+                <span class="kpi-text">배치 실패 후 재도전(Retry) 횟수 및 세션당 체류 시간 분석</span>
+            </div>
+            <div class="kpi-item">
+                <span class="badge green">Clear Rate</span>
+                <span class="kpi-text">일일 스테이지별 유저 클리어 비율 및 사용 코스트 최적화 데이터 수집</span>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
