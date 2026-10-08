@@ -1,350 +1,279 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>트릭컬 리바이브 시스템 분석 리포트</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>이정한 | Unity Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:      #0D1B2A;
+    --card:    #142030;
+    --border:  #1E3148;
+    --text:    #E2EAF4;
+    --muted:   #7A92AA;
+    --accent:  #C8DAEA;
+    --highlight: #5BB8D4;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ -webkit-text-size-adjust:100%; }
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter','Noto Sans KR',sans-serif;
+    line-height:1.6;
+    padding:56px 20px 80px;
+  }
+  .wrap{ max-width:700px; margin:0 auto; }
 
-    <!-- Pretendard Font -->
-    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v3.2.1/dist/web/static/pretendard.css" />
+  /* ── Hero ── */
+  .hero{ margin-bottom:56px; }
+  .hero h1{
+    font-size:clamp(1.9rem, 5vw, 2.5rem);
+    font-weight:700;
+    letter-spacing:-0.02em;
+    margin-bottom:10px;
+  }
+  .hero .tagline{
+    color:var(--accent);
+    font-size:1.05rem;
+    font-weight:500;
+    margin-bottom:22px;
+  }
+  .contact{ display:flex; flex-wrap:wrap; gap:10px; }
+  .contact a{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    color:var(--text);
+    text-decoration:none;
+    font-size:0.88rem;
+    padding:8px 14px;
+    border:1px solid var(--border);
+    border-radius:999px;
+    transition:border-color .15s ease, color .15s ease;
+    word-break:break-all;
+  }
+  .contact a:hover, .contact a:focus-visible{
+    border-color:var(--highlight);
+    color:var(--highlight);
+  }
+  .contact svg{ width:14px; height:14px; flex:none; }
 
-    <style>
-        :root {
-            --bg-base: #121212;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --accent-pink: #ff6beb;
-            --accent-cyan: #00e5ff;
-            --accent-yellow: #fde047;
-            --glass-bg: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-        }
+  /* ── Section ── */
+  section{ margin-bottom:48px; }
+  .section-title{
+    font-size:1.15rem;
+    font-weight:700;
+    color:var(--text);
+    padding-left:12px;
+    border-left:3px solid var(--highlight);
+    margin-bottom:20px;
+  }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  /* ── Education ── */
+  .edu-item{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:18px 20px;
+  }
+  .edu-period{ color:var(--muted); font-size:0.85rem; margin-bottom:6px; }
+  .edu-name{ font-weight:600; font-size:1.02rem; margin-bottom:4px; }
+  .edu-major{ color:var(--muted); font-size:0.92rem; }
+  .edu-gpa{ color:var(--accent); font-size:0.85rem; margin-top:8px; }
 
-        body {
-            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
-            background-color: var(--bg-base);
-            color: var(--text-main);
-            line-height: 1.6;
-            overflow-x: hidden;
-            position: relative;
-        }
+  /* ── Projects ── */
+  .proj-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:22px 22px 20px;
+    margin-bottom:16px;
+  }
+  .proj-head{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:space-between;
+    align-items:baseline;
+    gap:6px 16px;
+    margin-bottom:10px;
+  }
+  .proj-title{ font-size:1.08rem; font-weight:700; }
+  .proj-period{ color:var(--muted); font-size:0.82rem; white-space:nowrap; }
+  .proj-meta{
+    color:var(--muted);
+    font-size:0.85rem;
+    margin-bottom:14px;
+  }
+  .proj-meta b{ color:var(--accent); font-weight:600; }
+  .proj-list{ list-style:none; margin-bottom:14px; }
+  .proj-list li{
+    position:relative;
+    padding-left:16px;
+    font-size:0.92rem;
+    color:var(--text);
+    margin-bottom:8px;
+  }
+  .proj-list li::before{
+    content:"";
+    position:absolute;
+    left:0; top:0.62em;
+    width:5px; height:5px;
+    border-radius:50%;
+    background:var(--highlight);
+  }
+  .proj-list li:last-child{ margin-bottom:0; }
+  .tags{ display:flex; flex-wrap:wrap; gap:7px; }
+  .tag{
+    font-size:0.76rem;
+    color:var(--accent);
+    background:rgba(200,218,234,0.07);
+    border:1px solid var(--border);
+    padding:4px 10px;
+    border-radius:999px;
+    white-space:nowrap;
+  }
 
-        /* Ambient Glow Background */
-        .ambient-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -1;
-            overflow: hidden;
-            background: var(--bg-base);
-        }
+  footer{
+    text-align:center;
+    color:var(--muted);
+    font-size:0.8rem;
+    margin-top:20px;
+  }
 
-        .ambient-orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(100px);
-            opacity: 0.15;
-            animation: float 20s infinite alternate ease-in-out;
-        }
-
-        .orb-1 {
-            width: 500px;
-            height: 500px;
-            background: var(--accent-pink);
-            top: -100px;
-            left: -100px;
-        }
-
-        .orb-2 {
-            width: 600px;
-            height: 600px;
-            background: var(--accent-cyan);
-            bottom: -200px;
-            right: -100px;
-            animation-delay: -5s;
-        }
-
-        @keyframes float {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(50px, 50px); }
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 4rem 2rem;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 5rem;
-            opacity: 0;
-            transform: translateY(30px);
-            animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 0.4rem 1rem;
-            background: rgba(0, 229, 255, 0.1);
-            color: var(--accent-cyan);
-            border: 1px solid rgba(0, 229, 255, 0.3);
-            border-radius: 50px;
-            font-size: 0.875rem;
-            font-weight: 600;
-            letter-spacing: 0.05em;
-            margin-bottom: 1.5rem;
-        }
-
-        h1 {
-            font-size: 3rem;
-            font-weight: 800;
-            line-height: 1.2;
-            margin-bottom: 1rem;
-            letter-spacing: -0.02em;
-            background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .subtitle {
-            font-size: 1.25rem;
-            color: var(--text-muted);
-            font-weight: 400;
-            max-width: 600px;
-            margin: 0 auto 2rem auto;
-            word-break: keep-all;
-        }
-
-        .date {
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.4);
-            font-family: monospace;
-        }
-
-        .section-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 2.5rem;
-        }
-
-        .glass-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 3rem;
-            box-shadow: var(--glass-shadow);
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-                        box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-                        border-color 0.4s ease;
-
-            /* Initial state for scroll animation */
-            opacity: 0;
-            transform: translateY(40px);
-        }
-
-        .glass-card.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .glass-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5),
-                        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
-        }
-
-        .card-intro {
-            border-top: 4px solid var(--accent-yellow);
-        }
-
-        .card-sys1 {
-            border-top: 4px solid var(--accent-cyan);
-        }
-
-        .card-sys2 {
-            border-top: 4px solid var(--accent-pink);
-        }
-
-        .card-sys3 {
-            border-top: 4px solid #a855f7;
-        }
-
-        .card-conclusion {
-            background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
-            border: 1px solid rgba(255,255,255,0.15);
-        }
-
-        .card-number {
-            font-family: monospace;
-            font-size: 1.125rem;
-            color: var(--text-muted);
-            margin-bottom: 1rem;
-            display: block;
-        }
-
-        h2 {
-            font-size: 1.75rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            color: #ffffff;
-            letter-spacing: -0.01em;
-        }
-
-        p {
-            font-size: 1.125rem;
-            color: #cbd5e1;
-            margin-bottom: 1.25rem;
-            word-break: keep-all;
-            line-height: 1.7;
-        }
-
-        p:last-child {
-            margin-bottom: 0;
-        }
-
-        strong {
-            color: #fff;
-            font-weight: 600;
-        }
-
-        .highlight {
-            color: var(--accent-cyan);
-        }
-
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @media (max-width: 768px) {
-            h1 { font-size: 2.25rem; }
-            .glass-card { padding: 2rem; }
-            .container { padding: 3rem 1.5rem; }
-        }
-    </style>
+  @media (max-width:480px){
+    body{ padding:40px 16px 60px; }
+    .proj-card{ padding:18px 16px 16px; }
+    .proj-head{ flex-direction:column; align-items:flex-start; gap:4px; }
+  }
+</style>
 </head>
 <body>
+<div class="wrap">
 
-    <div class="ambient-bg">
-        <div class="ambient-orb orb-1"></div>
-        <div class="ambient-orb orb-2"></div>
+  <header class="hero">
+    <h1>이정한</h1>
+    <p class="tagline">누구나 즐길 수 있게 해주는 Unity 개발자</p>
+    <div class="contact">
+      <a href="mailto:dltmd1ry@naver.com">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+        dltmd1ry@naver.com
+      </a>
+      <a href="https://github.com/Junghan27025" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49 0-.24-.01-1.04-.01-1.89-2.78.62-3.37-1.22-3.37-1.22-.46-1.19-1.11-1.51-1.11-1.51-.91-.64.07-.63.07-.63 1 .07 1.53 1.05 1.53 1.05.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.04 1.03-2.76-.1-.26-.45-1.31.1-2.73 0 0 .84-.28 2.75 1.05a9.29 9.29 0 0 1 5 0c1.91-1.33 2.75-1.05 2.75-1.05.55 1.42.2 2.47.1 2.73.64.72 1.03 1.64 1.03 2.76 0 3.94-2.34 4.81-4.57 5.06.36.32.68.95.68 1.92 0 1.39-.01 2.51-.01 2.85 0 .27.18.6.69.49A10.02 10.02 0 0 0 22 12.25C22 6.58 17.52 2 12 2Z"/></svg>
+        github.com/Junghan27025
+      </a>
+    </div>
+  </header>
+
+  <section>
+    <h2 class="section-title">학력</h2>
+    <div class="edu-item">
+      <p class="edu-period">2021.03 ~ 현재</p>
+      <p class="edu-name">유한대학교</p>
+      <p class="edu-major">컴퓨터공학과 게임콘텐츠전공</p>
+      <p class="edu-gpa">3.38 / 4.5</p>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section-title">프로젝트 경험</h2>
+
+    <div class="proj-card">
+      <div class="proj-head">
+        <span class="proj-title">언럭키 히어로즈</span>
+        <span class="proj-period">2026.03 ~ 2026.07</span>
+      </div>
+      <p class="proj-meta"><b>기능 개발</b> · 개발 담당 (팀 4명 중 1명)</p>
+      <ul class="proj-list">
+        <li>팀 내 개발 담당으로서 SPUM 에셋 기반 2D 타워디펜스 게임의 전체 프로그래밍 구현 (스크립트 21개, ScriptableObject 기반 데이터 구조 설계) — 기획/아트/QA는 팀원이 담당</li>
+        <li>라운드제 몬스터 무한 소환, 티어 해금형 소환/합성 등 핵심 게임플레이 루프 구현</li>
+        <li>특수 몬스터(버튼 소환/자동 소멸/특수 코인) 콘텐츠와 조합표 UI(3초 후 자동 소멸, 재조합 가능) 구현</li>
+        <li>EnemyMove SpriteRenderer 캐싱, PlayerAttack 타겟 0.2초 캐싱 등으로 연산 최적화, GameManager UI를 변경 시에만 갱신하도록 개선</li>
+      </ul>
+      <div class="tags">
+        <span class="tag">Unity 6.3 LTS</span>
+        <span class="tag">C#</span>
+        <span class="tag">ScriptableObject</span>
+        <span class="tag">SPUM</span>
+      </div>
     </div>
 
-    <div class="container">
-        <header>
-            <div class="badge">SYSTEM ANALYSIS REPORT</div>
-            <h1>트릭컬 리바이브<br>시스템 분석 리포트</h1>
-            <p class="subtitle">오토배틀러 메커니즘과 인터랙티브 UI가 창출하는 압도적 유저 리텐션 구조의 이해</p>
-            <div class="date">October 2026</div>
-        </header>
-
-        <div class="section-grid">
-            <article class="glass-card card-intro observe-me">
-                <span class="card-number">00. INTRODUCTION</span>
-                <h2>단순한 귀여움, 그 이상의 전략적 깊이</h2>
-                <p>
-                    《트릭컬 리바이브》는 겉보기엔 가볍고 귀여운 서브컬처 방치형 RPG의 탈을 쓰고 있지만, 그 이면에는 유저를 지속적으로 게임에 묶어두는 <strong>치밀한 시스템적 설계</strong>가 자리 잡고 있습니다.
-                </p>
-                <p>
-                    이 리포트에서는 게임이 단순히 "캐릭터가 귀여워서" 성공한 것이 아니라, <strong>1) 오토배틀러 기반의 드래프트 시스템</strong>, <strong>2) 다변화된 성격 시너지 메타</strong>, 그리고 <strong>3) '볼따구'라는 독보적인 인터랙션 UI</strong>가 어떻게 구조적으로 유저의 재방문율(Retention)과 과금(Monetization)을 유도하는지 분석합니다.
-                </p>
-            </article>
-
-            <article class="glass-card card-sys1 observe-me">
-                <span class="card-number">01. SYSTEM</span>
-                <h2>오토배틀러식 드래프트 전투 시스템</h2>
-                <p>
-                    게임의 핵심 전투는 일반적인 모바일 RPG의 '스킬 타이밍 터치' 방식을 탈피하고, <span class="highlight">오토배틀러(Auto-battler) 장르의 '드래프트(Draft)' 시스템</span>을 채용했습니다.
-                </p>
-                <p>
-                    매 웨이브마다 플레이어에게 랜덤한 사도(캐릭터), 장비, 아티팩트, 스펠이 제시되며, 플레이어는 한정된 재화(코인) 내에서 최적의 선택을 내려야 합니다. 이는 매 판마다 주어지는 패가 달라지는 <strong>로그라이크(Roguelike)적 변수 창출</strong>을 의미합니다.
-                </p>
-                <p>
-                    동일한 스테이지를 반복 클리어하더라도 매번 덱 구성 과정이 달라지기 때문에 지루함이 상쇄되며, 플레이어는 '최고의 고점'을 뽑아내기 위해 끊임없이 재도전하게 됩니다. 이러한 확률적 보상 구조는 플레이어에게 <strong>지속적인 리플레이 가치(Replayability)</strong>를 제공합니다.
-                </p>
-            </article>
-
-            <article class="glass-card card-sys2 observe-me">
-                <span class="card-number">02. SYSTEM</span>
-                <h2>TFT를 연상케 하는 성격 시너지 메타</h2>
-                <p>
-                    드래프트 시스템의 전략적 깊이를 완성하는 창구는 <strong>'성격 시너지(Personality Synergy)'</strong>입니다. 사도들은 '광기', '우울', '냉정', '순수', '활발' 등의 성격을 지니며, 동일한 성격을 필드에 일정 수 이상 배치할 때마다 강력한 패시브 효과가 발동됩니다.
-                </p>
-                <p>
-                    이는 라이엇 게임즈의 <em>'전략적 팀 전투(TFT)'</em>와 매우 유사한 덱 빌딩 메커니즘입니다. 유저는 초반에 주어진 패를 바탕으로 특정 시너지를 탈 것인지(예: 우울 6시너지), 아니면 고성능 단일 캐릭터 위주로 잡덱을 구성할 것인지 실시간으로 판단해야 합니다.
-                </p>
-                <p>
-                    개발사는 주기적인 밸런스 패치와 신규 캐릭터 출시를 통해 특정 성격이 주도하는 '메타(Meta)'를 계속해서 순환시킵니다. 이는 유저가 단일 덱에 머물지 않고 <strong>새로운 캐릭터를 육성하고 뽑기(Gacha)를 진행해야 하는 강력한 당위성</strong>을 부여합니다.
-                </p>
-            </article>
-
-            <article class="glass-card card-sys3 observe-me">
-                <span class="card-number">03. SYSTEM</span>
-                <h2>애착 형성의 마스터피스: '볼따구' 인터랙션</h2>
-                <p>
-                    트릭컬 리바이브를 상징하는 단 하나의 요소를 꼽자면 단연코 <strong>'볼따구(Cheek-pulling) 시스템'</strong>입니다. 유저가 로비나 UI 상에서 캐릭터의 볼을 터치하고 드래그하면, 2D 물리 엔진 메쉬 변형을 통해 볼이 쫀득하게 늘어나는 시각적, 촉각적 피드백을 제공합니다.
-                </p>
-                <p>
-                    이 인터랙션은 단순한 이스터에그가 아닙니다. 모바일 환경의 '터치'라는 본질적인 행위를 극대화하여 플레이어와 캐릭터 간의 <strong>파라소셜 본드(Parasocial Bond, 일방적 유대감)</strong>를 순식간에 형성합니다. 볼을 당길 때마다 캐릭터가 우는 소리를 내거나 화를 내는 등의 실시간 리액션은 유저에게 "내가 이 세계와 직접 상호작용하고 있다"는 강렬한 몰입감을 선사합니다.
-                </p>
-                <p>
-                    이러한 밈(Meme) 친화적인 UI는 커뮤니티에서 폭발적인 바이럴을 일으켰으며, 유저들이 게임을 떠나지 못하게 만드는 <strong>가장 강력한 감성적 앵커(Anchor)</strong>로 작용합니다. 애착이 생긴 캐릭터에게 재화를 지불하는 것은 유저 입장에서 매우 자연스러운 흐름이 됩니다.
-                </p>
-            </article>
-
-            <article class="glass-card card-conclusion observe-me">
-                <span class="card-number">04. CONCLUSION</span>
-                <h2>결론: 이성과 감성을 모두 충족시킨 설계</h2>
-                <p>
-                    《트릭컬 리바이브》의 성공은 결코 우연이 아닙니다. <strong>드래프트 및 시너지 시스템</strong>이 게임을 계속 붙잡고 있게 만드는 '이성적이고 전략적인 재미(두뇌)'를 담당한다면, <strong>볼따구 인터랙션</strong>은 캐릭터에 지갑을 열게 만드는 '감성적인 애착(가슴)'을 담당합니다.
-                </p>
-                <p>
-                    하드코어한 전략성과 직관적이고 감각적인 UI의 완벽한 융합. 이것이 바로 수많은 경쟁작 사이에서 트릭컬이 독보적인 리텐션과 팬덤을 구축할 수 있었던 게임 디자인적 핵심 비결입니다.
-                </p>
-            </article>
-        </div>
+    <div class="proj-card">
+      <div class="proj-head">
+        <span class="proj-title">JumpImpossible</span>
+        <span class="proj-period">2026.07 ~ 현재</span>
+      </div>
+      <p class="proj-meta"><b>기능 개발</b> · 개발 담당 (팀 3명 중 1명)</p>
+      <ul class="proj-list">
+        <li>챕터 1~5 배경/플랫폼 아트 리소스 반영</li>
+        <li>챕터 진행 관리(ChapterManager), 챕터 진행도 UI(ChapterProgressUI) 구현</li>
+        <li>점프 게이지 UI(JumpGaugeUI), 일시정지 메뉴(PauseMenuUI), 상점 UI(ShopUI) 구현</li>
+        <li>플레이어 애니메이션(PlayerAnimator) 및 조작(PlayerController) 구현</li>
+        <li>GitHub 원격 저장소 기반 팀 협업 운영</li>
+      </ul>
+      <div class="tags">
+        <span class="tag">Unity</span>
+        <span class="tag">C#</span>
+      </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const observerOptions = {
-                root: null,
-                rootMargin: '0px',
-                threshold: 0.15
-            };
+    <div class="proj-card">
+      <div class="proj-head">
+        <span class="proj-title">대학생 키우기 (University Life Simulator)</span>
+        <span class="proj-period">2026.08 ~ 현재</span>
+      </div>
+      <p class="proj-meta"><b>기능 개발</b> · 개발 담당 (팀 3명 중 1명)</p>
+      <ul class="proj-list">
+        <li>JSON 직렬화 기반 저장 시스템, 캐릭터 성장(학점/체력/인맥/집중력) 시스템 구현</li>
+        <li>방치 보상 시스템(오프라인 + 실시간 누적) 구현</li>
+        <li>턴제 전투 시스템(BattleManager, StageManager) 구현</li>
+        <li>Google Gemini API 연동 AI 이벤트 자동 생성 도구 개발 — 런타임과 분리된 에디터 전용 어셈블리로 구성해 배포 빌드에 API 키가 노출되지 않도록 설계</li>
+        <li>저장→성장→방치보상→전투 전체 플로우 실기기 테스트 통과</li>
+      </ul>
+      <div class="tags">
+        <span class="tag">Unity 6000.3.10f1</span>
+        <span class="tag">URP</span>
+        <span class="tag">New Input System</span>
+        <span class="tag">C#</span>
+        <span class="tag">Google Gemini API</span>
+      </div>
+    </div>
 
-            const observer = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        observer.unobserve(entry.target); // Animate only once
-                    }
-                });
-            }, observerOptions);
+    <div class="proj-card">
+      <div class="proj-head">
+        <span class="proj-title">버섯먹자</span>
+        <span class="proj-period">2026.03 ~ 2026.07</span>
+      </div>
+      <p class="proj-meta"><b>버그 리포트 / 결함 관리</b> · QA 담당 (팀 3명 중 1명)</p>
+      <ul class="proj-list">
+        <li>모바일 게임 '버섯커 키우기' 버그 발견 → 원인 조사 → 진행 상태 기록 및 Jira 이슈 트래킹 진행 — 버그 5건(결제금액 불일치, 스탯 미변동 등), 불편사항 3건 정리, 17슬라이드 QA 리포트 PPT 작성</li>
+        <li>Python/OpenCV/PyAutoGUI/Tesseract-OCR 기반 QA 자동화 스크립트를 개인적으로 단독 개발 — Unity 테스트 게임을 3개 계정 상태 흐름에 걸쳐 자동으로 테스트하도록 구현</li>
+        <li>자동화 테스트 결과를 16슬라이드 PPT로 정리해 발표자료화</li>
+      </ul>
+      <div class="tags">
+        <span class="tag">Jira</span>
+        <span class="tag">Python</span>
+        <span class="tag">OpenCV</span>
+        <span class="tag">PyAutoGUI</span>
+        <span class="tag">Tesseract-OCR</span>
+        <span class="tag">pptxgenjs</span>
+      </div>
+    </div>
 
-            const cards = document.querySelectorAll('.observe-me');
-            cards.forEach(card => {
-                observer.observe(card);
-            });
-        });
-    </script>
+  </section>
+
+  <footer>
+    <p>최종 업데이트: <span id="updated"></span></p>
+  </footer>
+
+</div>
+<script>
+  document.getElementById('updated').textContent =
+    new Date().toLocaleDateString('ko-KR', { year:'numeric', month:'long', day:'numeric' });
+</script>
 </body>
 </html>
